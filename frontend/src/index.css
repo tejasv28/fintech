@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --color-finNavy: #0A1628;
+  --color-finBlue: #2563EB;
+  --color-finGreen: #16A34A;
+  --color-finRed: #DC2626;
+  --font-sans: 'Inter', sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans antialiased;
+  }
+}
