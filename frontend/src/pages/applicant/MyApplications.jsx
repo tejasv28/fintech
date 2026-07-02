@@ -4,6 +4,7 @@ import DataTable from '../../components/common/DataTable';
 import StatusBadge from '../../components/common/StatusBadge';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { formatCurrency, formatDate } from '../../utils/formatters';
+import Button from '../../components/common/Button';
 
 const MyApplications = () => {
   const [data, setData] = useState({ content: [], totalPages: 0, last: true });
@@ -25,10 +26,10 @@ const MyApplications = () => {
   }, [page]);
 
   const columns = [
-    { header: 'Date Applied', accessor: 'createdAt', render: (row) => formatDate(row.createdAt) },
-    { header: 'Amount', accessor: 'loanAmount', render: (row) => formatCurrency(row.loanAmount) },
+    { header: 'Date Applied', accessor: 'createdAt', render: (row) => <span className="font-mono text-sm">{formatDate(row.createdAt)}</span> },
+    { header: 'Amount', accessor: 'loanAmount', render: (row) => <span className="font-mono text-sm font-semibold text-ink-900">{formatCurrency(row.loanAmount)}</span> },
     { header: 'Purpose', accessor: 'loanPurpose' },
-    { header: 'Term (Months)', accessor: 'loanTermMonths' },
+    { header: 'Term (Months)', accessor: 'loanTermMonths', render: (row) => <span className="font-mono text-sm">{row.loanTermMonths}</span> },
     { header: 'Status', accessor: 'status', render: (row) => <StatusBadge status={row.status} /> },
   ];
 
@@ -36,7 +37,7 @@ const MyApplications = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">My Loan Applications</h1>
+      <h1 className="font-display text-2xl font-bold text-ink-900">My Loan Applications</h1>
       <DataTable 
         columns={columns} 
         data={data.content} 
@@ -44,22 +45,22 @@ const MyApplications = () => {
       />
 
       {data.totalPages > 1 && (
-        <div className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-          <button 
+        <div className="flex justify-between items-center bg-surface-card p-4 rounded-card shadow-card border border-border mt-4">
+          <Button 
+            variant="secondary"
             disabled={page === 0}
             onClick={() => setPage(p => p - 1)}
-            className="px-4 py-2 border rounded-md disabled:opacity-50"
           >
             Previous
-          </button>
-          <span className="text-sm text-gray-600">Page {page + 1} of {data.totalPages}</span>
-          <button 
+          </Button>
+          <span className="font-mono text-sm text-ink-500">Page {page + 1} of {data.totalPages}</span>
+          <Button 
+            variant="secondary"
             disabled={data.last}
             onClick={() => setPage(p => p + 1)}
-            className="px-4 py-2 border rounded-md disabled:opacity-50"
           >
             Next
-          </button>
+          </Button>
         </div>
       )}
     </div>

@@ -4,6 +4,7 @@ import DataTable from '../../components/common/DataTable';
 import StatusBadge from '../../components/common/StatusBadge';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { formatCurrency, formatDate } from '../../utils/formatters';
+import Button from '../../components/common/Button';
 
 const AllActiveLoans = () => {
   const [data, setData] = useState({ content: [], totalPages: 0, last: true });
@@ -25,11 +26,11 @@ const AllActiveLoans = () => {
   }, [page]);
 
   const columns = [
-    { header: 'Loan ID', accessor: 'id', render: (row) => <span className="font-mono text-xs">{row.id.substring(0, 8)}...</span> },
+    { header: 'Loan ID', accessor: 'id', render: (row) => <span className="font-mono text-xs font-semibold text-ink-500">{row.id.substring(0, 8)}...</span> },
     { header: 'Applicant', accessor: 'applicant', render: (row) => row.applicant?.fullName || 'N/A' },
-    { header: 'Principal', accessor: 'principalAmount', render: (row) => formatCurrency(row.principalAmount) },
-    { header: 'Balance', accessor: 'outstandingBalance', render: (row) => <span className="font-semibold text-finRed">{formatCurrency(row.outstandingBalance)}</span> },
-    { header: 'Rate', accessor: 'interestRate', render: (row) => `${row.interestRate}%` },
+    { header: 'Principal', accessor: 'principalAmount', render: (row) => <span className="font-mono text-sm">{formatCurrency(row.principalAmount)}</span> },
+    { header: 'Balance', accessor: 'outstandingBalance', render: (row) => <span className="font-mono text-sm font-semibold text-danger">{formatCurrency(row.outstandingBalance)}</span> },
+    { header: 'Rate', accessor: 'interestRate', render: (row) => <span className="font-mono text-sm">{row.interestRate}%</span> },
     { header: 'Status', accessor: 'loanStatus', render: (row) => <StatusBadge status={row.loanStatus} /> },
   ];
 
@@ -37,7 +38,7 @@ const AllActiveLoans = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">All Active Loans</h1>
+      <h1 className="font-display text-2xl font-bold text-ink-900">All Active Loans</h1>
       <DataTable 
         columns={columns} 
         data={data.content} 
@@ -45,22 +46,22 @@ const AllActiveLoans = () => {
       />
       
       {data.totalPages > 1 && (
-        <div className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-          <button 
+        <div className="flex justify-between items-center bg-surface-card p-4 rounded-card shadow-card border border-border mt-4">
+          <Button 
+            variant="secondary"
             disabled={page === 0}
             onClick={() => setPage(p => p - 1)}
-            className="px-4 py-2 border rounded-md disabled:opacity-50"
           >
             Previous
-          </button>
-          <span className="text-sm text-gray-600">Page {page + 1} of {data.totalPages}</span>
-          <button 
+          </Button>
+          <span className="font-mono text-sm text-ink-500">Page {page + 1} of {data.totalPages}</span>
+          <Button 
+            variant="secondary"
             disabled={data.last}
             onClick={() => setPage(p => p + 1)}
-            className="px-4 py-2 border rounded-md disabled:opacity-50"
           >
             Next
-          </button>
+          </Button>
         </div>
       )}
     </div>

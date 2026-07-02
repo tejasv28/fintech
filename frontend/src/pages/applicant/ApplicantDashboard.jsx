@@ -3,8 +3,9 @@ import api from '../../services/api';
 import StatCard from '../../components/common/StatCard';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { formatCurrency } from '../../utils/formatters';
-import { FileText, CheckCircle, CreditCard, Calendar } from 'lucide-react';
+import { FileText, CheckCircle, CreditCard, Calendar, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Button from '../../components/common/Button';
 
 const ApplicantDashboard = () => {
   const [stats, setStats] = useState(null);
@@ -38,19 +39,16 @@ const ApplicantDashboard = () => {
   }, [lastUpdated]);
 
   if (loading) return <LoadingSpinner />;
-  if (!stats) return <div>Failed to load dashboard.</div>;
+  if (!stats) return <div className="text-sm text-ink-500">Failed to load dashboard.</div>;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-[1080px] mx-auto">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
-          <p className="text-sm text-gray-500 mt-1">Last updated: {secondsAgo} seconds ago</p>
+          <h1 className="font-display text-2xl font-bold text-ink-900">Dashboard Overview</h1>
+          <p className="text-[13px] text-ink-500 mt-1">Last updated: {secondsAgo}s ago</p>
         </div>
-        <Link 
-          to="/applicant/apply"
-          className="bg-finBlue hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-        >
+        <Link to="/applicant/apply" className="inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-semibold bg-accent text-white hover:bg-accent-dark hover:-translate-y-px transition-all duration-150 shadow-sm">
           Apply for a Loan
         </Link>
       </div>
@@ -76,17 +74,21 @@ const ApplicantDashboard = () => {
         />
         <StatCard 
           title="Next EMI Due" 
-          value={stats.nextEmiDue} 
+          value={stats.nextEmiDue || 'None'} 
           icon={Calendar} 
           colorClass="bg-purple-500" 
         />
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
-        <div className="flex space-x-4">
-          <Link to="/applicant/applications" className="text-finBlue hover:underline">View my applications</Link>
-          <Link to="/applicant/loans" className="text-finBlue hover:underline">View my active loans</Link>
+      <div className="bg-surface-card rounded-card shadow-card border border-border p-8 mt-6">
+        <h2 className="font-display text-lg font-semibold text-ink-900 mb-6">Quick Actions</h2>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Link to="/applicant/applications" className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl border-2 border-border text-sm font-semibold text-ink-700 hover:bg-surface hover:text-ink-900 transition-colors">
+            <FileText className="h-4 w-4" /> View My Applications
+          </Link>
+          <Link to="/applicant/loans" className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl border-2 border-border text-sm font-semibold text-ink-700 hover:bg-surface hover:text-ink-900 transition-colors">
+            <CreditCard className="h-4 w-4" /> View Active Loans
+          </Link>
         </div>
       </div>
     </div>

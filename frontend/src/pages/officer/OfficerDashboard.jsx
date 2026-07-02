@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../../services/api';
 import StatCard from '../../components/common/StatCard';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
-import { Users, CheckSquare, AlertTriangle, TrendingUp } from 'lucide-react';
+import { Users, CheckSquare, AlertTriangle, TrendingUp, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const OfficerDashboard = () => {
@@ -37,14 +37,14 @@ const OfficerDashboard = () => {
   }, [lastUpdated]);
 
   if (loading) return <LoadingSpinner />;
-  if (!stats) return <div>Failed to load dashboard.</div>;
+  if (!stats) return <div className="text-sm text-ink-500">Failed to load dashboard.</div>;
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Officer Dashboard</h1>
-          <p className="text-sm text-gray-500 mt-1">Last updated: {secondsAgo} seconds ago</p>
+          <h1 className="font-display text-2xl font-bold text-ink-900">Officer Dashboard</h1>
+          <p className="text-[13px] text-ink-500 mt-1">Last updated: {secondsAgo}s ago</p>
         </div>
       </div>
 
@@ -75,13 +75,17 @@ const OfficerDashboard = () => {
         />
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <div className="bg-surface-card rounded-card shadow-card border border-border p-8">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Priority Actions</h2>
-          <Link to="/officer/queue" className="text-sm text-finBlue font-medium hover:underline">View Full Queue &rarr;</Link>
+          <h2 className="font-display text-lg font-semibold text-ink-900">Priority Actions</h2>
+          <Link to="/officer/queue" className="flex items-center text-sm text-accent font-semibold hover:text-accent-dark transition-colors">
+            View Full Queue <ArrowRight className="h-4 w-4 ml-1" />
+          </Link>
         </div>
-        <p className="text-gray-600 mb-4">You have <span className="font-bold text-finNavy">{stats.pendingManualReview}</span> applications requiring manual review.</p>
-        <Link to="/officer/queue?tab=MANUAL_REVIEW" className="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md transition-colors">
+        <p className="text-sm text-ink-700 mb-6">
+          You have <span className="font-mono text-base font-semibold text-warning px-1">{stats.pendingManualReview}</span> applications requiring manual review.
+        </p>
+        <Link to="/officer/queue?tab=MANUAL_REVIEW" className="inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-semibold bg-warning text-white hover:brightness-95 transition-all duration-150">
           Start Reviewing
         </Link>
       </div>

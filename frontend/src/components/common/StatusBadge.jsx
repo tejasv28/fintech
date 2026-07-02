@@ -1,51 +1,23 @@
 import React from 'react';
 
+const STATUS_CONFIG = {
+  APPROVED:      { bg: 'bg-success-soft',    text: 'text-success', dot: 'bg-success' },
+  REJECTED:      { bg: 'bg-danger-soft',     text: 'text-danger',  dot: 'bg-danger' },
+  PENDING:       { bg: 'bg-ink-300/10',      text: 'text-ink-500', dot: 'bg-ink-300' },
+  UNDER_REVIEW:  { bg: 'bg-info-soft',       text: 'text-info',    dot: 'bg-info' },
+  MANUAL_REVIEW: { bg: 'bg-warning-soft',    text: 'text-warning', dot: 'bg-warning' },
+  ACTIVE:        { bg: 'bg-success-soft',    text: 'text-success', dot: 'bg-success' },
+  CLOSED:        { bg: 'bg-ink-300/10',      text: 'text-ink-500', dot: 'bg-ink-300' },
+  DEFAULTED:     { bg: 'bg-danger-soft',     text: 'text-danger',  dot: 'bg-danger' },
+};
+
 const StatusBadge = ({ status }) => {
-  let bgColor = 'bg-gray-100';
-  let textColor = 'text-gray-800';
-
-  switch (status) {
-    case 'APPROVED':
-      bgColor = 'bg-green-100';
-      textColor = 'text-green-800';
-      break;
-    case 'REJECTED':
-      bgColor = 'bg-red-100';
-      textColor = 'text-red-800';
-      break;
-    case 'PENDING':
-      bgColor = 'bg-gray-100';
-      textColor = 'text-gray-600';
-      break;
-    case 'UNDER_REVIEW':
-      bgColor = 'bg-blue-100';
-      textColor = 'text-blue-800';
-      break;
-    case 'MANUAL_REVIEW':
-      bgColor = 'bg-yellow-100';
-      textColor = 'text-yellow-800';
-      break;
-    case 'ACTIVE':
-      bgColor = 'bg-green-100';
-      textColor = 'text-green-800';
-      break;
-    case 'CLOSED':
-      bgColor = 'bg-gray-100';
-      textColor = 'text-gray-800';
-      break;
-    case 'DEFAULTED':
-      bgColor = 'bg-red-100';
-      textColor = 'text-red-800';
-      break;
-    default:
-      break;
-  }
-
-  const formattedStatus = status ? status.replace('_', ' ') : '';
-
+  const config = STATUS_CONFIG[status] || STATUS_CONFIG.PENDING;
+  const label = status ? status.replace(/_/g, ' ') : '';
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${bgColor} ${textColor}`}>
-      {formattedStatus}
+    <span className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-semibold uppercase tracking-wide ${config.bg} ${config.text}`}>
+      <span className={`h-1.5 w-1.5 rounded-full ${config.dot}`} />
+      {label}
     </span>
   );
 };

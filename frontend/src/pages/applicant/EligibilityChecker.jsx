@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/common/Card';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
+import { AlertCircle, CheckCircle2 } from 'lucide-react';
 
 const EligibilityChecker = () => {
     const [formData, setFormData] = useState({
@@ -53,17 +54,19 @@ const EligibilityChecker = () => {
 
     return (
         <div className="max-w-2xl mx-auto space-y-6">
-            <h1 className="text-3xl font-bold text-slate-800">Loan Eligibility Pre-Checker</h1>
-            <p className="text-slate-600">Quickly see if you meet the basic requirements for a loan before applying.</p>
+            <div>
+              <h1 className="font-display text-2xl font-bold text-ink-900">Loan Eligibility Pre-Checker</h1>
+              <p className="text-sm text-ink-500 mt-2">Quickly see if you meet the basic requirements for a loan before applying.</p>
+            </div>
             
             <Card>
                 <CardHeader>
                     <CardTitle>Enter your details</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <form onSubmit={checkEligibility} className="space-y-4">
+                    <form onSubmit={checkEligibility} className="space-y-5">
                         <Input
-                            label="Loan Amount Requested ($)"
+                            label="Loan Amount Requested (₹)"
                             name="loanAmount"
                             type="number"
                             value={formData.loanAmount}
@@ -71,7 +74,7 @@ const EligibilityChecker = () => {
                             required
                         />
                         <Input
-                            label="Annual Income ($)"
+                            label="Annual Income (₹)"
                             name="annualIncome"
                             type="number"
                             value={formData.annualIncome}
@@ -94,24 +97,36 @@ const EligibilityChecker = () => {
                             onChange={handleChange}
                             required
                         />
-                        <Button type="submit" className="w-full">Check Eligibility</Button>
+                        <div className="pt-2">
+                          <Button type="submit" variant="primary" className="w-full">Check Eligibility</Button>
+                        </div>
                     </form>
                 </CardContent>
             </Card>
 
             {result && (
-                <Card className={`border-l-4 ${result.eligible === true ? 'border-green-500' : result.eligible === false ? 'border-red-500' : 'border-yellow-500'}`}>
-                    <CardContent className="pt-6">
-                        <h3 className={`text-xl font-semibold mb-2 ${result.eligible === true ? 'text-green-700' : result.eligible === false ? 'text-red-700' : 'text-yellow-700'}`}>
-                            {result.message}
-                        </h3>
-                        {result.reasons.length > 0 && (
-                            <ul className="list-disc pl-5 text-slate-700 space-y-1 mt-3">
-                                {result.reasons.map((r, i) => <li key={i}>{r}</li>)}
-                            </ul>
-                        )}
-                    </CardContent>
-                </Card>
+                <div className={`mt-6 p-6 rounded-xl border-l-[6px] shadow-sm flex flex-col gap-4 ${
+                  result.eligible === true ? 'bg-success-soft border-l-success' : 
+                  result.eligible === false ? 'bg-danger-soft border-l-danger' : 
+                  'bg-warning-soft border-l-warning'
+                }`}>
+                    <div className="flex items-center gap-3">
+                      {result.eligible === true ? <CheckCircle2 className="h-6 w-6 text-success" /> : 
+                       <AlertCircle className={`h-6 w-6 ${result.eligible === false ? 'text-danger' : 'text-warning'}`} />}
+                      <h3 className={`text-base font-semibold ${
+                        result.eligible === true ? 'text-success' : 
+                        result.eligible === false ? 'text-danger' : 
+                        'text-warning'
+                      }`}>
+                          {result.message}
+                      </h3>
+                    </div>
+                    {result.reasons.length > 0 && (
+                        <ul className="list-disc pl-11 text-sm text-ink-700 space-y-1">
+                            {result.reasons.map((r, i) => <li key={i}>{r}</li>)}
+                        </ul>
+                    )}
+                </div>
             )}
         </div>
     );
