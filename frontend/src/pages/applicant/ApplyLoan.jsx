@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -10,13 +10,9 @@ import Button from '../../components/common/Button';
 const ApplyLoan = () => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const [step, setStep] = useState(1);
-  const [idempotencyKey, setIdempotencyKey] = useState('');
+  const idempotencyKey = useRef(uuidv4());
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setIdempotencyKey(uuidv4());
-  }, []);
 
   const nextStep = () => setStep((s) => s + 1);
   const prevStep = () => setStep((s) => s - 1);
@@ -34,7 +30,7 @@ const ApplyLoan = () => {
       };
 
       await api.post('/loans/apply', payload, {
-        headers: { 'X-Idempotency-Key': idempotencyKey }
+        headers: { 'X-Idempotency-Key': idempotencyKey.current }
       });
       
       toast.success('Loan application submitted successfully!');
